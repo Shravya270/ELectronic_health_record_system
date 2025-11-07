@@ -1,0 +1,70 @@
+/* ConnectionBanner.css */
+
+.connection-banner {
+  padding: 12px 20px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  text-align: center;
+  z-index: 1000;
+  position: relative;
+}
+
+.connection-banner.connected {
+  background-color: rgba(0, 191, 166, 0.2);
+  border-bottom: 2px solid #00bfa6;
+  color: #00e6c3;
+}
+
+.connection-banner.warning {
+  background-color: rgba(255, 193, 7, 0.2);
+  border-bottom: 2px solid #ffc107;
+  color: #ffd54f;
+}
+
+.connection-banner.error {
+  background-color: rgba(255, 0, 0, 0.2);
+  border-bottom: 2px solid #ff4444;
+  color: #ff6666;
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.banner-icon {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.banner-text {
+  flex: 1;
+  min-width: 200px;
+}
+
+.banner-account {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  font-family: monospace;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .connection-banner {
+    font-size: 0.8rem;
+    padding: 10px 15px;
+  }
+
+  .banner-content {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .banner-account {
+    font-size: 0.75rem;
+  }
+}
+

@@ -67,8 +67,17 @@ module.exports = {
     development: {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 7545,            // Standard Ethereum port (default: none)
-      network_id: "*",       // Any network (default: none)
+      network_id: 1337,      // Ganache network ID (matches Chain ID)
+      gas: 6721975,          // Gas limit
+      gasPrice: 20000000000, // 20 gwei
      },
+    ganache: {
+      host: "127.0.0.1",     // Localhost
+      port: 7545,            // Ganache default port
+      network_id: 1337,      // Ganache network ID
+      gas: 6721975,          // Gas limit
+      gasPrice: 20000000000, // 20 gwei
+    },
     //
     // An additional network, but with some advanced options…
     // advanced: {

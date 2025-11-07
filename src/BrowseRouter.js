@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Web3 from "web3";
 import PatientRegistry from "./components/PatientRegistration";
 import LoginPage from "./components/LoginPage";
 import PatientDashBoard from "./components/PatientDashBoard";
@@ -20,36 +19,12 @@ import ViewPatientList from "./components/ViewPatientList";
 import ViewProfile from "./components/ViewProfile";
 import ViewDoctorProfile from "./components/ViewDoctorProfile";
 import ViewDiagnosticProfile from "./components/ViewDiagnosticProfile";
-import AboutUs from "./components/AboutPage"; 
-
-
+import AboutUs from "./components/AboutPage";
+import UploadPastRecords from "./components/UploadPastRecords";
+import GrantPermission from "./components/GrantPermission";
+import DoctorViewPatientRecords from "./components/DoctorViewPatientRecords"; 
 
 const BrowseRouter = () => {
-  const [web3, setWeb3] = useState(null);
-  const [contract, setContract] = useState(null);
-  const [accounts, setAccounts] = useState([]);
-  const [loggedInPatient, setLoggedInPatient] = useState(false);
-
-  useEffect(() => {
-    const init = async () => {
-      if (window.ethereum) {
-        const web3Instance = new Web3(window.ethereum);
-        try {
-          await window.ethereum.enable();
-          setWeb3(web3Instance);
-
-          const fetchedAccounts = await web3Instance.eth.getAccounts();
-          setAccounts(fetchedAccounts);
-        } catch (error) {
-          console.error("User denied access to accounts.");
-        }
-      } else {
-        console.log("Please install MetaMask extension");
-      }
-    };
-
-    init();
-  }, []);
   return (
     <BrowserRouter>
 
@@ -104,6 +79,14 @@ const BrowseRouter = () => {
           path="/patient/:hhNumber/viewrecords"
           element={<ViewPatientRecords />}
         ></Route>
+        <Route
+          path="/patient/:hhNumber/upload-past-records"
+          element={<UploadPastRecords />}
+        ></Route>
+        <Route
+          path="/patient/:hhNumber/grant-permission"
+          element={<GrantPermission />}
+        ></Route>
         
         <Route 
         path="/diagnostic/:hhNumber/diagnosticform" 
@@ -114,6 +97,10 @@ const BrowseRouter = () => {
         <Route
           path="/doctor/:hhNumber/patientlist"
           element={<ViewPatientList />}
+        ></Route>
+        <Route
+          path="/doctor/:hhNumber/view-patient-records/:patientHHNumber"
+          element={<DoctorViewPatientRecords />}
         ></Route>
        
        

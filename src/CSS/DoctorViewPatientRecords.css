@@ -1,0 +1,235 @@
+/* DoctorViewPatientRecords.css */
+
+.doctor-view-records-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: calc(100vh - 100px);
+  padding: 40px 20px;
+  background: linear-gradient(to bottom, #0b0c10, #1f2833);
+  color: #ffffff;
+  font-family: 'Courier New', monospace;
+}
+
+.records-heading {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 40px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.loading-message {
+  font-size: 1.2rem;
+  color: #cccccc;
+  text-align: center;
+  padding: 40px;
+}
+
+.error-message {
+  background-color: rgba(255, 0, 0, 0.2);
+  border: 2px solid #ff4444;
+  color: #ff6666;
+  padding: 20px 30px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 1.1rem;
+  max-width: 600px;
+}
+
+.patient-details-card {
+  background-color: rgba(31, 40, 51, 0.8);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.patient-name-header {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #00bfa6;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px;
+  background-color: rgba(11, 12, 16, 0.5);
+  border-radius: 8px;
+  border-left: 4px solid #00bfa6;
+}
+
+.detail-label {
+  font-size: 0.9rem;
+  color: #cccccc;
+  font-weight: 600;
+}
+
+.detail-value {
+  font-size: 1.1rem;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+.records-section {
+  background-color: rgba(31, 40, 51, 0.8);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.records-section-heading {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #00bfa6;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.record-item {
+  background-color: rgba(11, 12, 16, 0.6);
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #00bfa6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.record-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 8px rgba(0, 191, 166, 0.3);
+}
+
+.record-info {
+  flex: 1;
+}
+
+.record-timestamp {
+  font-size: 0.9rem;
+  color: #cccccc;
+  margin-bottom: 8px;
+}
+
+.record-hash {
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+.record-hash code {
+  background-color: rgba(0, 191, 166, 0.2);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  word-break: break-all;
+}
+
+.view-record-link {
+  background-color: #00bfa6;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: 0.3s ease;
+  white-space: nowrap;
+  margin-left: 15px;
+}
+
+.view-record-link:hover {
+  background-color: #00e6c3;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 191, 166, 0.4);
+}
+
+.empty-records-message {
+  text-align: center;
+  color: #cccccc;
+  font-size: 1rem;
+  padding: 30px;
+  background-color: rgba(11, 12, 16, 0.5);
+  border-radius: 8px;
+  border: 2px dashed #555555;
+}
+
+.back-button-container {
+  margin-top: 20px;
+}
+
+.back-button {
+  background-color: #555555;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: 'Courier New', monospace;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.back-button:hover {
+  background-color: #777777;
+  transform: scale(1.05);
+}
+
+.back-button:active {
+  transform: scale(0.98);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .records-heading {
+    font-size: 2rem;
+  }
+
+  .patient-details-card {
+    padding: 30px 20px;
+  }
+
+  .patient-name-header {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .doctor-view-records-container {
+    padding: 30px 15px;
+  }
+
+  .records-heading {
+    font-size: 1.75rem;
+  }
+
+  .patient-details-card {
+    padding: 25px 15px;
+  }
+}
+

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import Web3 from "web3";
 import DoctorRegistration from "../build/contracts/DoctorRegistration.json";
 import { useNavigate } from "react-router-dom";
+import { getWeb3AndAccount } from "../utils/web3Provider";
+import { getContract } from "../utils/getContract";
 import "../CSS/DoctorLoginPage.css";
 import NavBar from "./NavBar";
 
@@ -12,6 +13,7 @@ const DoctorLogin = () => {
   const [password, setPassword] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
   const [doctorDetails, setDoctorDetails] = useState(null);
+  const [loginError, setLoginError] = useState("");
 
   const handlehhNumberChange = (e) => {
     const inputhhNumber = e.target.value;
@@ -27,13 +29,13 @@ const DoctorLogin = () => {
 
   const handleCheckRegistration = async () => {
     try {
-      const web3 = new Web3(window.ethereum);
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = DoctorRegistration.networks[networkId];
-      const contract = new web3.eth.Contract(
-        DoctorRegistration.abi,
-        deployedNetwork && deployedNetwork.address
-      );
+      setLoginError("");
+      
+      // Get Web3 and account using shared provider
+      const { web3, account, networkId } = await getWeb3AndAccount();
+      
+      // Get contract using shared helper
+      const contract = getContract(DoctorRegistration, web3, networkId);
 
       const isRegisteredResult = await contract.methods
         .isRegisteredDoctor(hhNumber)
@@ -52,14 +54,20 @@ const DoctorLogin = () => {
           setDoctorDetails(doctor);
           navigate("/doctor/" + hhNumber);
         } else {
-          alert("Incorrect password");
+          setLoginError("Incorrect password");
         }
       } else {
-        alert("Doctor not registered");
+        setLoginError("Doctor not registered");
       }
     } catch (error) {
       console.error("Error checking registration:", error);
-      alert("An error occurred while checking registration.");
+      if (error.message.includes("not deployed")) {
+        setLoginError(`DoctorRegistration ${error.message}`);
+      } else if (error.message.includes("switch MetaMask")) {
+        setLoginError(error.message);
+      } else {
+        setLoginError("An error occurred while checking registration. " + error.message);
+      }
     }
   };
 
@@ -103,6 +111,11 @@ const DoctorLogin = () => {
               required
             />
           </div>
+          {loginError && (
+            <div className="mb-4 p-3 bg-red-900 border border-red-500 rounded text-red-200 text-sm">
+              {loginError}
+            </div>
+          )}
           <div className="space-x-4 text-center mt-6">
 
           <button

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Web3 from "web3";
 import { useParams, useNavigate } from "react-router-dom";
 import "../CSS/PatientDashBoard.css";
 import NavBar_Logout from "./NavBar_Logout";
+import ConnectionBanner from "./ConnectionBanner";
 import PatientRegistration from "../build/contracts/PatientRegistration.json";
+import { getWeb3AndAccount, setupNetworkListeners } from "../utils/web3Provider";
+import { getContract } from "../utils/getContract";
 
 const PatientDashBoard = () => {
-  const { hhNumber } = useParams(); // Retrieve the hhNumber from the URL parameter
-
+  const { hhNumber } = useParams();
   const navigate = useNavigate();
   
   const viewRecord = () => {
@@ -17,69 +18,109 @@ const PatientDashBoard = () => {
   const viewprofile = () => {
     navigate("/patient/" + hhNumber + "/viewprofile");
   };
-  
 
-  const [web3, setWeb3] = useState(null);
-  const [contract, setContract] = useState(null);
-  const [patientPhoneNo, setPatientPhoneNo] = useState(null);
+  const uploadPastRecords = () => {
+    navigate("/patient/" + hhNumber + "/upload-past-records");
+  };
+
+  const grantPermission = () => {
+    navigate("/patient/" + hhNumber + "/grant-permission");
+  };
+
   const [patientDetails, setPatientDetails] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const init = async () => {
-      if (window.ethereum) {
-        const web3Instance = new Web3(window.ethereum);
-        setWeb3(web3Instance);
-
-        const networkId = await web3Instance.eth.net.getId();
-        const deployedNetwork = PatientRegistration.networks[networkId];
-        const contractInstance = new web3Instance.eth.Contract(
-          PatientRegistration.abi,
-          deployedNetwork && deployedNetwork.address,
-        );
-        setContract(contractInstance);
-        setPatientPhoneNo(hhNumber);
-        try {
-          const result = await contractInstance.methods.getPatientDetails(patientPhoneNo).call();
-          setPatientDetails(result);
-        } catch (error) {
-          console.error('Error retrieving patient details:', error);
-          setError('Error retrieving patient details');
+      try {
+        // Get Web3 and account using shared provider
+        const { web3, account, networkId } = await getWeb3AndAccount();
+        
+        // Get contract using shared helper
+        const contract = getContract(PatientRegistration, web3, networkId);
+        
+        // Fetch patient details
+        const result = await contract.methods.getPatientDetails(hhNumber).call();
+        setPatientDetails(result);
+        setError(null);
+      } catch (error) {
+        console.error('Error retrieving patient details:', error);
+        if (error.message.includes("not deployed")) {
+          setError(`PatientRegistration ${error.message}`);
+        } else if (error.message.includes("switch MetaMask")) {
+          setError(error.message);
+        } else {
+          setError('Error retrieving patient details: ' + error.message);
         }
-      } else {
-        console.log('Please install MetaMask extension');
-        setError('Please install MetaMask extension');
       }
     };
 
     init();
-  }, [patientPhoneNo]);
+
+    // Setup network listeners
+    const cleanup = setupNetworkListeners(
+      () => {
+        // Account changed - reinitialize
+        init();
+      },
+      () => {
+        // Chain changed - page will reload
+      }
+    );
+
+    return cleanup;
+  }, [hhNumber]);
 
   return (
     <div>
       <NavBar_Logout />
-      <div className="bg-gradient-to-b from-black to-gray-800 p-4 sm:p-10 font-mono text-white h-screen flex flex-col justify-center items-center">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-6">Patient Dashboard</h2>
+      <ConnectionBanner />
+      <div className="patient-dashboard-container">
+        <h2 className="dashboard-heading">Patient Dashboard</h2>
+        {error && (
+          <div className="error-message" style={{ 
+            padding: "15px", 
+            marginBottom: "20px", 
+            backgroundColor: "rgba(255, 0, 0, 0.2)", 
+            border: "2px solid #ff4444", 
+            borderRadius: "8px",
+            color: "#ff6666",
+            textAlign: "center"
+          }}>
+            {error}
+          </div>
+        )}
         {patientDetails && (
-          <p className="text-xl sm:text-2xl mb-24">
+          <p className="welcome-message">
             Welcome{" "}
-            <span className="font-bold text-yellow-500">{patientDetails.name}!</span>
+            <span className="patient-name">{patientDetails.name}!</span>
           </p>
         )}
-        <div className="flex flex-wrap justify-center gap-5 w-full px-4 sm:px-0">
+        <div className="dashboard-buttons-grid">
           <button
             onClick={viewprofile}
-            className="my-2 px-4 sm:px-8 py-4 sm:py-5 w-full sm:w-1/4 rounded-lg bg-teal-500 hover:bg-gray-600 transition-colors duration-300"
+            className="dashboard-button"
           >
             View Profile
           </button>
           <button
             onClick={viewRecord}
-            className="my-2 px-4 sm:px-8 py-4 sm:py-5 w-full sm:w-1/4 rounded-lg bg-teal-500 hover:bg-gray-600 transition-colors duration-300"
+            className="dashboard-button"
           >
             View Record
           </button>
-
+          <button
+            onClick={uploadPastRecords}
+            className="dashboard-button"
+          >
+            Upload Past Records
+          </button>
+          <button
+            onClick={grantPermission}
+            className="dashboard-button"
+          >
+            Grant Permission
+          </button>
         </div>
       </div>
     </div>
