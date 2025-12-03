@@ -10,23 +10,28 @@ const ConnectionBanner = () => {
     isCorrectNetwork: false,
     account: null,
   });
+  const [isConnecting, setIsConnecting] = useState(false);
+
+  const init = async () => {
+    try {
+      setIsConnecting(true);
+      const { account, networkId } = await getWeb3AndAccount();
+      const networkStatus = getNetworkStatus(networkId, account);
+      setStatus(networkStatus);
+    } catch (error) {
+      console.error("Connection error:", error);
+      setStatus({
+        message: error.message,
+        isConnected: false,
+        isCorrectNetwork: false,
+        account: null,
+      });
+    } finally {
+      setIsConnecting(false);
+    }
+  };
 
   useEffect(() => {
-    const init = async () => {
-      try {
-        const { account, networkId } = await getWeb3AndAccount();
-        const networkStatus = getNetworkStatus(networkId, account);
-        setStatus(networkStatus);
-      } catch (error) {
-        setStatus({
-          message: error.message,
-          isConnected: false,
-          isCorrectNetwork: false,
-          account: null,
-        });
-      }
-    };
-
     init();
 
     // Setup listeners
@@ -52,6 +57,10 @@ const ConnectionBanner = () => {
     return cleanup;
   }, []);
 
+  const handleConnect = async () => {
+    await init();
+  };
+
   if (status.isConnected && status.isCorrectNetwork) {
     return (
       <div className="connection-banner connected">
@@ -73,6 +82,26 @@ const ConnectionBanner = () => {
       <div className="banner-content">
         <span className="banner-icon">{status.isCorrectNetwork ? "⚠" : "✗"}</span>
         <span className="banner-text">{status.message}</span>
+        {!status.isConnected && (
+          <button
+            onClick={handleConnect}
+            disabled={isConnecting}
+            className="banner-connect-button"
+            title="Click to connect MetaMask"
+          >
+            {isConnecting ? "Connecting..." : "Connect MetaMask"}
+          </button>
+        )}
+        {status.isConnected && !status.isCorrectNetwork && (
+          <button
+            onClick={handleConnect}
+            disabled={isConnecting}
+            className="banner-connect-button"
+            title="Click to switch to Ganache network"
+          >
+            {isConnecting ? "Switching..." : "Switch Network"}
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Web3 from "web3";
 import DoctorRegistration from "../build/contracts/DoctorRegistration.json";
 import { useNavigate } from "react-router-dom";
 import "../CSS/DoctorRegistration.css";
 import NavBar from "./NavBar";
+import { getEthersContract, getEthersSigner } from "../utils/getEthersContract";
 
 const DoctorRegistry = () => {
   const [web3, setWeb3] = useState(null);
@@ -34,25 +34,11 @@ const DoctorRegistry = () => {
 
   useEffect(() => {
     const init = async () => {
-      if (window.ethereum) {
-        const web3Instance = new Web3(window.ethereum);
-        try {
-          await window.ethereum.enable();
-          setWeb3(web3Instance);
-
-          const networkId = await web3Instance.eth.net.getId();
-          const deployedNetwork = DoctorRegistration.networks[networkId];
-          const contractInstance = new web3Instance.eth.Contract(
-            DoctorRegistration.abi,
-            deployedNetwork && deployedNetwork.address
-          );
-
-          setContract(contractInstance);
-        } catch (error) {
-          console.error("User denied access to accounts.");
-        }
-      } else {
-        console.log("Please install MetaMask extension");
+      try {
+        const contractE = await getEthersContract(DoctorRegistration);
+        setContract(contractE);
+      } catch (error) {
+        console.error("Ethers init error:", error);
       }
     };
 
@@ -113,25 +99,18 @@ const DoctorRegistry = () => {
     }
       
     try {
-      const web3 = new Web3(window.ethereum);
+      const signer = await getEthersSigner();
+      const contractE = await getEthersContract(DoctorRegistration);
 
-      const networkId = await web3.eth.net.getId();
-
-      const contract = new web3.eth.Contract(
-        DoctorRegistration.abi,
-        DoctorRegistration.networks[networkId].address
-      );
-
-      const isRegDoc = await contract.methods
-        .isRegisteredDoctor(hhNumber)
-        .call();
+      const isRegDoc = await contractE.isRegisteredDoctor(hhNumber);
 
       if (isRegDoc) {
         alert("Doctor already exists");
         return;
       }
 
-      await contract.methods
+      const tx = await contractE
+        .connect(signer)
         .registerDoctor(
           doctorName,
           hospitalName,
@@ -144,8 +123,8 @@ const DoctorRegistry = () => {
           designation,
           workExperience,
           password // Include password in the function call
-        )
-        .send({ from: doctorAddress });
+        );
+      await tx.wait();
 
       alert("Doctor registered successfully!");
       navigate("/");

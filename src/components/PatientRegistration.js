@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Web3 from "web3";
+import { getWeb3AndAccount } from "../utils/web3Provider";
+import { getContract } from "../utils/getContract";
 import PatientRegistration from "../build/contracts/PatientRegistration.json";
+import { getEthersContract, getEthersSigner } from "../utils/getEthersContract";
 import { useNavigate } from "react-router-dom";
 import "../CSS/PatientRegistration.css";
 import NavBar from "./NavBar";
@@ -29,28 +31,14 @@ const PatientRegistry = () => {
 
   useEffect(() => {
     const init = async () => {
-      if (window.ethereum) {
-        const web3Instance = new Web3(window.ethereum);
-        try {
-          await window.ethereum.enable();
-          setWeb3(web3Instance);
-
-          const networkId = await web3Instance.eth.net.getId();
-          const deployedNetwork = PatientRegistration.networks[networkId];
-          const contractInstance = new web3Instance.eth.Contract(
-            PatientRegistration.abi,
-            deployedNetwork && deployedNetwork.address
-          );
-
-          setContract(contractInstance);
-        } catch (error) {
-          console.error("User denied access to accounts.");
-        }
-      } else {
-        console.log("Please install MetaMask extension");
+      try {
+        const contractE = await getEthersContract(PatientRegistration);
+        // expose a minimal shim for existing usage .methods.*.call/send
+        setContract(contractE);
+      } catch (error) {
+        console.error("Ethers init error:", error);
       }
     };
-
     init();
   }, []);
 
@@ -120,26 +108,16 @@ const PatientRegistry = () => {
 
       
     try {
-      const web3 = new Web3(window.ethereum);
-
-      const networkId = await web3.eth.net.getId();
-
-      const contract = new web3.eth.Contract(
-        PatientRegistration.abi,
-        PatientRegistration.networks[networkId].address
-      );
-
-      const isRegPatient = await contract.methods
-        .isRegisteredPatient(hhNumber)
-        .call();
+      const signer = await getEthersSigner();
+      const contractE = await getEthersContract(PatientRegistration);
+      const isRegPatient = await contractE.isRegisteredPatient(hhNumber);
 
       if (isRegPatient) {
         alert("Patient already exists");
         return;
       }
 
-      await contract.methods
-      .registerPatient(
+      const tx = await contractE.connect(signer).registerPatient(
         walletAddress,
         name,
         dateOfBirth,
@@ -149,8 +127,8 @@ const PatientRegistry = () => {
         email,
         hhNumber,
         password
-      )
-      .send({ from: walletAddress });
+      );
+      await tx.wait();
 
       alert("Patient registered successfully!");
       navigate("/");

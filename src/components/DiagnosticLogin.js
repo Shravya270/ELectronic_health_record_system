@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import Web3 from "web3";
 import DiagnosticRegistration from "../build/contracts/DiagnosticRegistration.json";
 import { useNavigate } from "react-router-dom";
+import { getWeb3AndAccount } from "../utils/web3Provider";
+import { getContract } from "../utils/getContract";
+import ConnectionBanner from "./ConnectionBanner";
 import "../CSS/DoctorLoginPage.css";
 import NavBar from "./NavBar";
 
@@ -12,6 +14,7 @@ const DiagnosticLogin = () => {
   const [password, setPassword] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
   const [diagnosticDetails, setDiagnosticDetails] = useState(null);
+  const [loginError, setLoginError] = useState("");
 
   const handlehhNumberChange = (e) => {
     const inputhhNumber = e.target.value;
@@ -27,13 +30,13 @@ const DiagnosticLogin = () => {
 
   const handleCheckRegistration = async () => {
     try {
-      const web3 = new Web3(window.ethereum);
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = DiagnosticRegistration.networks[networkId];
-      const contract = new web3.eth.Contract(
-        DiagnosticRegistration.abi,
-        deployedNetwork && deployedNetwork.address
-      );
+      setLoginError("");
+      
+      // Get Web3 and account using shared provider
+      const { web3, account, networkId } = await getWeb3AndAccount();
+      
+      // Get contract using shared helper
+      const contract = getContract(DiagnosticRegistration, web3, networkId);
 
       const isRegisteredResult = await contract.methods
         .isRegisteredDiagnostic(hhNumber)
@@ -52,14 +55,20 @@ const DiagnosticLogin = () => {
           setDiagnosticDetails(diagnostic);
           navigate("/diagnostic/" + hhNumber);
         } else {
-          alert("Incorrect password");
+          setLoginError("Incorrect password");
         }
       } else {
-        alert("Diagnostic not registered");
+        setLoginError("Diagnostic not registered");
       }
     } catch (error) {
       console.error("Error checking registration:", error);
-      alert("An error occurred while checking registration.");
+      if (error.message.includes("not deployed")) {
+        setLoginError(`DiagnosticRegistration ${error.message}`);
+      } else if (error.message.includes("switch MetaMask")) {
+        setLoginError(error.message);
+      } else {
+        setLoginError("An error occurred while checking registration. " + error.message);
+      }
     }
   };
 
@@ -70,6 +79,7 @@ const DiagnosticLogin = () => {
   return (
     <div>
       <NavBar />
+      <ConnectionBanner />
       <div className="bg-gradient-to-b from-black to-gray-800 min-h-screen flex flex-col justify-center items-center p-4 font-mono text-white">
         <div className="w-full max-w-4xl bg-gray-900 p-20 rounded-lg shadow-lg">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6">Diagnostic Login</h2>
@@ -103,6 +113,11 @@ const DiagnosticLogin = () => {
               required
             />
           </div>
+          {loginError && (
+            <div className="mb-4 p-3 bg-red-900 border border-red-500 rounded text-red-200 text-sm">
+              {loginError}
+            </div>
+          )}
           <div className="space-x-4 text-center mt-6">
           <button
             onClick={handleCheckRegistration}

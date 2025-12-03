@@ -3,6 +3,7 @@ import PatientRegistration from "../build/contracts/PatientRegistration.json";
 import { useNavigate } from "react-router-dom";
 import { getWeb3AndAccount } from "../utils/web3Provider";
 import { getContract } from "../utils/getContract";
+import ConnectionBanner from "./ConnectionBanner";
 import "../CSS/DoctorLoginPage.css";
 import NavBar from "./NavBar";
 
@@ -78,6 +79,7 @@ const PatientLogin = () => {
   return (
     <div>
       <NavBar />
+      <ConnectionBanner />
       <div className="bg-gradient-to-b from-black to-gray-800 min-h-screen flex flex-col justify-center items-center p-4 font-mono text-white">
         <div className="w-full max-w-4xl bg-gray-900 p-20 rounded-lg shadow-lg">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6">Patient Login</h2>

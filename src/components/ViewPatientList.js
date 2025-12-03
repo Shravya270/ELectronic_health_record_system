@@ -136,12 +136,21 @@ function ViewPatientList() {
                   <div className="patient-name">{patient.patient_name}</div>
                   <div className="patient-number">HH Number: {patient.patient_number}</div>
                 </div>
-                <button
-                  className="view-record-button"
-                  onClick={() => handleViewRecord(patient.patient_number)}
-                >
-                  View Record
-                </button>
+                <div className="button-group" style={{ display: "flex", gap: "10px" }}>
+                  <button
+                    className="view-record-button"
+                    onClick={() => handleViewRecord(patient.patient_number)}
+                  >
+                    View Record
+                  </button>
+                  <button
+                    className="view-record-button"
+                    onClick={() => navigate(`/doctor/${hhNumber}/request-test/${patient.patient_number}`)}
+                    style={{ backgroundColor: "#10b981" }}
+                  >
+                    Request Test
+                  </button>
+                </div>
               </div>
             ))}
           </div>

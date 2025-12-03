@@ -51,6 +51,41 @@
   font-family: monospace;
 }
 
+.banner-connect-button {
+  padding: 6px 16px;
+  background-color: rgba(0, 191, 166, 0.3);
+  border: 1px solid #00bfa6;
+  color: #00e6c3;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+}
+
+.banner-connect-button:hover:not(:disabled) {
+  background-color: rgba(0, 191, 166, 0.5);
+  border-color: #00e6c3;
+  transform: scale(1.05);
+}
+
+.banner-connect-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error .banner-connect-button {
+  background-color: rgba(255, 68, 68, 0.3);
+  border-color: #ff4444;
+  color: #ff6666;
+}
+
+.error .banner-connect-button:hover:not(:disabled) {
+  background-color: rgba(255, 68, 68, 0.5);
+  border-color: #ff6666;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .connection-banner {

@@ -22,7 +22,13 @@ import ViewDiagnosticProfile from "./components/ViewDiagnosticProfile";
 import AboutUs from "./components/AboutPage";
 import UploadPastRecords from "./components/UploadPastRecords";
 import GrantPermission from "./components/GrantPermission";
-import DoctorViewPatientRecords from "./components/DoctorViewPatientRecords"; 
+import DoctorViewPatientRecords from "./components/DoctorViewPatientRecords";
+import VideoConsultation from "./components/VideoConsultation";
+import DoctorRequestTest from "./components/DoctorRequestTest";
+import DiagnosticRequests from "./components/DiagnosticRequests";
+import DiagnosticUploadReport from "./components/DiagnosticUploadReport";
+import PatientDiagnosticHistory from "./components/PatientDiagnosticHistory";
+import DoctorViewDiagnosticReports from "./components/DoctorViewDiagnosticReports"; 
 
 const BrowseRouter = () => {
   return (
@@ -102,8 +108,40 @@ const BrowseRouter = () => {
           path="/doctor/:hhNumber/view-patient-records/:patientHHNumber"
           element={<DoctorViewPatientRecords />}
         ></Route>
+        <Route
+          path="/patient/:hhNumber/video-consultation"
+          element={<VideoConsultation />}
+        ></Route>
+        <Route
+          path="/doctor/:hhNumber/video-consultation"
+          element={<VideoConsultation />}
+        ></Route>
+        <Route
+          path="/doctor/:hhNumber/request-test/:patientHH"
+          element={<DoctorRequestTest />}
+        ></Route>
+        <Route
+          path="/patient/:hhNumber/diagnostic-reports"
+          element={<PatientDiagnosticHistory />}
+        ></Route>
+        <Route
+          path="/doctor/:hhNumber/view-patient-records/:patientHHNumber/diagnostic-reports"
+          element={<DoctorViewDiagnosticReports />}
+        ></Route>
+        <Route
+          path="/diagnostic/:hhNumber/requests"
+          element={<DiagnosticRequests />}
+        ></Route>
+        <Route
+          path="/diagnostic/:hhNumber/upload-report/:requestId"
+          element={<DiagnosticUploadReport />}
+        ></Route>
+        <Route
+          path="/diagnostic/:hhNumber/upload-report/new"
+          element={<DiagnosticUploadReport />}
+        ></Route>
        
-       
+        
       </Routes>
       <Footer></Footer>
     </BrowserRouter>

@@ -27,6 +27,14 @@ const PatientDashBoard = () => {
     navigate("/patient/" + hhNumber + "/grant-permission");
   };
 
+  const videoConsultation = () => {
+    navigate("/patient/" + hhNumber + "/video-consultation");
+  };
+
+  const viewDiagnosticReports = () => {
+    navigate("/patient/" + hhNumber + "/diagnostic-reports");
+  };
+
   const [patientDetails, setPatientDetails] = useState(null);
   const [error, setError] = useState(null);
 
@@ -120,6 +128,18 @@ const PatientDashBoard = () => {
             className="dashboard-button"
           >
             Grant Permission
+          </button>
+          <button
+            onClick={videoConsultation}
+            className="dashboard-button"
+          >
+            Video Consultation
+          </button>
+          <button
+            onClick={viewDiagnosticReports}
+            className="dashboard-button"
+          >
+            Diagnostic Reports
           </button>
         </div>
       </div>

@@ -1,0 +1,465 @@
+/* VideoConsultation.css */
+
+/* Main container with gradient background */
+.video-consultation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 100px);
+  padding: 40px 20px;
+  background: linear-gradient(180deg, #0b0c10, #1f2833);
+  color: #ffffff;
+  font-family: 'Courier New', monospace;
+}
+
+/* Heading */
+.video-heading {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Subheading */
+.video-subheading {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  text-align: center;
+  color: #c5c6c7;
+  max-width: 800px;
+}
+
+/* Form container */
+.video-consultation-form {
+  width: 100%;
+  max-width: 600px;
+  background: rgba(31, 40, 51, 0.8);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 191, 166, 0.2);
+}
+
+/* Form group */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-label {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 191, 166, 0.3);
+  background-color: #1f2833;
+  color: #ffffff;
+  font-size: 1rem;
+  font-family: 'Courier New', monospace;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #00bfa6;
+  box-shadow: 0 0 0 3px rgba(0, 191, 166, 0.2);
+}
+
+.form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Status message */
+.status-message {
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.status-message.success {
+  background-color: rgba(0, 191, 166, 0.2);
+  border: 2px solid #00bfa6;
+  color: #00e6c3;
+}
+
+.status-message.error {
+  background-color: rgba(255, 68, 68, 0.2);
+  border: 2px solid #ff4444;
+  color: #ff6666;
+}
+
+.status-message.info {
+  background-color: rgba(197, 198, 199, 0.2);
+  border: 2px solid #c5c6c7;
+  color: #c5c6c7;
+}
+
+/* Action buttons container */
+.video-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.action-button {
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-family: 'Courier New', monospace;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.action-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.action-button.primary {
+  background-color: #00bfa6;
+  color: white;
+}
+
+.action-button.primary:hover:not(:disabled) {
+  background-color: #00e6c3;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 191, 166, 0.4);
+}
+
+.action-button.start-call {
+  background-color: #00bfa6;
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+.action-button.start-call:hover {
+  background-color: #00e6c3;
+  transform: scale(1.05);
+  animation: none;
+}
+
+.action-button.secondary {
+  background-color: #4a5568;
+  color: white;
+}
+
+.action-button.secondary:hover:not(:disabled) {
+  background-color: #5a6578;
+  transform: scale(1.02);
+}
+
+.action-button.leave-call {
+  background-color: #ff4444;
+  color: white;
+}
+
+.action-button.leave-call:hover {
+  background-color: #ff6666;
+  transform: scale(1.05);
+}
+
+/* Pulse animation for start call button */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 4px 6px rgba(0, 191, 166, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(0, 191, 166, 0.6);
+  }
+}
+
+/* Video call container */
+.video-call-container {
+  width: 100%;
+  min-height: calc(100vh - 100px);
+  background: linear-gradient(180deg, #0b0c10, #1f2833);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 20px;
+}
+
+/* Video call interface */
+.video-call-interface {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.call-info {
+  text-align: center;
+  margin-bottom: 20px;
+  background: rgba(31, 40, 51, 0.6);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 191, 166, 0.3);
+}
+
+.call-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #00bfa6;
+  font-weight: bold;
+}
+
+.call-participant {
+  font-size: 1.2rem;
+  color: #c5c6c7;
+  margin: 8px 0;
+}
+
+.call-id-text {
+  font-size: 0.9rem;
+  color: #8e9aaf;
+  font-family: 'Courier New', monospace;
+  margin-top: 10px;
+}
+
+/* Call UI container */
+.call-ui {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Participants container */
+.participants-container {
+  width: 100%;
+  min-height: 500px;
+  background: #1f2833;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 191, 166, 0.4);
+  border: 2px solid rgba(0, 191, 166, 0.3);
+  overflow: hidden;
+}
+
+/* Call controls container */
+.call-controls-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(31, 40, 51, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 191, 166, 0.2);
+}
+
+/* Video loading state */
+.video-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: #c5c6c7;
+  font-size: 1.2rem;
+}
+
+.video-placeholder {
+  text-align: center;
+  padding: 40px;
+  color: #c5c6c7;
+}
+
+.video-placeholder p {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+/* Override Stream SDK default styles to match EHR theme */
+.str-video__call-controls {
+  background: transparent !important;
+}
+
+.str-video__call-controls-button {
+  background-color: #00bfa6 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.str-video__call-controls-button:hover {
+  background-color: #00e6c3 !important;
+  transform: scale(1.05) !important;
+}
+
+.str-video__participant-view {
+  background: #1f2833 !important;
+}
+
+.str-video__participant-details {
+  color: #ffffff !important;
+}
+
+/* Stream Video theme customization */
+.str-video {
+  --str-video__primary-color: #00bfa6;
+  --str-video__primary-color-low: rgba(0, 191, 166, 0.1);
+  --str-video__text-high-emphasis: #ffffff;
+  --str-video__text-medium-emphasis: #c5c6c7;
+  --str-video__background-color: #1f2833;
+  --str-video__secondary-background-color: #0b0c10;
+}
+
+/* Status box additions for persistent messages */
+.status-box {
+  margin: 10px 0;
+  padding: 8px 14px;
+  border-radius: 6px;
+  width: 80%;
+  text-align: center;
+  font-weight: 500;
+  transition: 0.3s;
+}
+.status-box.warning {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #bbb;
+}
+.status-box.success {
+  background-color: rgba(0, 191, 166, 0.15);
+  color: #00e6c3;
+  border: 1px solid #00bfa6;
+}
+
+/* Incoming call modal */
+.video-call-invite-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.video-call-invite-modal {
+  width: 90%;
+  max-width: 420px;
+  background: #1f2833;
+  color: #ffffff;
+  border: 1px solid rgba(0, 191, 166, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+  padding: 24px;
+  text-align: center;
+}
+
+.video-call-invite-modal h3 {
+  margin: 0 0 10px 0;
+  color: #00bfa6;
+}
+
+.invite-actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Stream Video SDK responsive adjustments */
+@media (max-width: 768px) {
+  .participants-container {
+    min-height: 300px;
+  }
+
+  .call-title {
+    font-size: 1.5rem;
+  }
+
+  .call-participant {
+    font-size: 1rem;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .video-heading {
+    font-size: 2rem;
+  }
+
+  .video-subheading {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
+  .video-consultation-form {
+    padding: 30px 20px;
+  }
+
+  .video-call-interface {
+    padding: 20px;
+  }
+
+  .stream-video-wrapper {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-consultation-container {
+    padding: 20px 15px;
+  }
+
+  .video-heading {
+    font-size: 1.75rem;
+  }
+
+  .video-consultation-form {
+    padding: 25px 15px;
+  }
+
+  .action-button {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+
+  .stream-video-wrapper {
+    min-height: 250px;
+  }
+}
+
+/* Fade transitions */
+.video-consultation-form {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.video-call-interface {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

@@ -212,6 +212,20 @@ const DoctorViewPatientRecords = () => {
           </div>
         )}
 
+        {/* Diagnostic Reports Section */}
+        <div className="records-section">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+            <h2 className="records-section-heading">Diagnostic Reports</h2>
+            <button
+              onClick={() => navigate(`/doctor/${hhNumber}/view-patient-records/${patientHHNumber}/diagnostic-reports`)}
+              className="back-button"
+              style={{ backgroundColor: "#10b981" }}
+            >
+              View Diagnostic Reports
+            </button>
+          </div>
+        </div>
+
         {/* Medical Records Section */}
         <div className="records-section">
           <h2 className="records-section-heading">Medical Records</h2>
